@@ -19,8 +19,8 @@ export default function RootClientLayout({ children }: RootClientLayoutProps) {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <div className="flex flex-col min-h-screen">
-        <Header />
-        <main className="flex-grow">{children}</main>
+        {!isAdminPage && <Header />}
+        <main className={`flex-grow ${isAdminPage ? 'p-0' : ''}`}>{children}</main>
         {!isAdminPage && <FooterWrapper />}
       </div>
     </ThemeProvider>

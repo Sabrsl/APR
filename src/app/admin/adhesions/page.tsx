@@ -32,6 +32,7 @@ import {
   Avatar,
   Collapse,
   Alert,
+  Tooltip,
 } from '@mui/material';
 import {
   Search as SearchIcon,
@@ -43,12 +44,16 @@ import {
   Cancel as CancelIcon,
   FilterList as FilterListIcon,
   Visibility as VisibilityIcon,
+  FileDownload as FileDownloadIcon,
+  TableChart as TableChartIcon,
+  Description as DescriptionIcon,
 } from '@mui/icons-material';
 import Link from 'next/link';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import fr from 'date-fns/locale/fr';
+import * as XLSX from 'xlsx';
 
 // Données fictives pour les adhésions
 const adhesionsData = [
@@ -146,6 +151,7 @@ export default function AdminAdhesions() {
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [page, setPage] = useState(1);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [exportAnchorEl, setExportAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -252,6 +258,128 @@ export default function AdminAdhesions() {
   // Calculer les éléments pour la page actuelle
   const paginatedData = filteredData.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
+  // Ouvrir le menu d'exportation
+  const handleExportClick = (event: React.MouseEvent<HTMLElement>) => {
+    setExportAnchorEl(event.currentTarget);
+  };
+
+  // Fermer le menu d'exportation
+  const handleExportClose = () => {
+    setExportAnchorEl(null);
+  };
+
+  // Fonction pour exporter au format CSV
+  const exportToCSV = () => {
+    // En-têtes du CSV
+    const headers = ['ID', 'Nom', 'Prénom', 'Email', 'Téléphone', 'Région', 'Département', 'Commune', 'Profession', 'Date', 'Statut'];
+    
+    // Convertir les données en format CSV
+    const csvRows = filteredData.map(item => {
+      return [
+        item.id,
+        item.nom,
+        item.prenom,
+        item.email,
+        item.telephone,
+        item.region,
+        item.departement,
+        item.commune,
+        item.profession,
+        item.date,
+        item.status
+      ].join(',');
+    });
+    
+    // Assembler le contenu complet du CSV
+    const csvContent = [headers.join(','), ...csvRows].join('\n');
+    
+    // Créer un objet Blob et un lien de téléchargement
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    
+    // Créer un élément lien pour télécharger le fichier
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `adhesions_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    
+    // Déclencher le téléchargement
+    link.click();
+    
+    // Nettoyer
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    handleExportClose();
+    
+    // Afficher un message de confirmation
+    setAlertMessage('Les adhésions ont été exportées avec succès au format CSV.');
+    setAlertSeverity('success');
+    setShowAlert(true);
+    
+    // Fermer l'alerte après 5 secondes
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 5000);
+  };
+
+  // Fonction pour exporter au format Excel
+  const exportToExcel = () => {
+    // Préparer les données pour Excel
+    const workbook = XLSX.utils.book_new();
+    
+    // Convertir les données en format adéquat pour XLSX
+    const worksheetData = filteredData.map(item => ({
+      ID: item.id,
+      Nom: item.nom,
+      Prénom: item.prenom,
+      Email: item.email,
+      Téléphone: item.telephone,
+      Région: item.region,
+      Département: item.departement,
+      Commune: item.commune,
+      Profession: item.profession,
+      Date: item.date,
+      Statut: item.status
+    }));
+    
+    // Créer une feuille de calcul
+    const worksheet = XLSX.utils.json_to_sheet(worksheetData);
+    
+    // Ajouter la feuille au classeur
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Adhésions");
+    
+    // Générer le fichier Excel
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    
+    // Créer un objet Blob pour le téléchargement
+    const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const url = URL.createObjectURL(blob);
+    
+    // Créer un élément lien pour télécharger le fichier
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `adhesions_${new Date().toISOString().split('T')[0]}.xlsx`);
+    document.body.appendChild(link);
+    
+    // Déclencher le téléchargement
+    link.click();
+    
+    // Nettoyer
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    handleExportClose();
+    
+    // Afficher un message de confirmation
+    setAlertMessage('Les adhésions ont été exportées avec succès au format Excel.');
+    setAlertSeverity('success');
+    setShowAlert(true);
+    
+    // Fermer l'alerte après 5 secondes
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 5000);
+  };
+
   return (
     <Box>
       {/* Alerte de confirmation */}
@@ -276,8 +404,39 @@ export default function AdminAdhesions() {
           <Typography variant="h4" fontWeight="bold">
             Gestion des adhésions
           </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<FileDownloadIcon />}
+            onClick={handleExportClick}
+            sx={{ borderRadius: 2, textTransform: 'none' }}
+          >
+            Exporter
+          </Button>
         </Box>
       </Box>
+
+      {/* Menu d'exportation */}
+      <Menu
+        anchorEl={exportAnchorEl}
+        open={Boolean(exportAnchorEl)}
+        onClose={handleExportClose}
+        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+      >
+        <MenuItem onClick={exportToCSV}>
+          <ListItemIcon>
+            <TableChartIcon fontSize="small" />
+          </ListItemIcon>
+          Exporter en CSV
+        </MenuItem>
+        <MenuItem onClick={exportToExcel}>
+          <ListItemIcon>
+            <DescriptionIcon fontSize="small" />
+          </ListItemIcon>
+          Exporter en Excel
+        </MenuItem>
+      </Menu>
 
       {/* Filtres et recherche */}
       <Paper
