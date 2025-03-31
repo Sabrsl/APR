@@ -14,21 +14,114 @@ import {
   useMediaQuery,
   Fade,
   Divider,
+  ThemeProvider,
+  createTheme,
+  Paper,
+  Avatar,
+  CardActions,
+  Chip
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import Link from 'next/link';
 import SchoolIcon from '@mui/icons-material/School';
 import WorkIcon from '@mui/icons-material/Work';
-import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety';
+import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import AgricultureIcon from '@mui/icons-material/Agriculture';
-import BusinessIcon from '@mui/icons-material/Business';
-import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
+import BuildIcon from '@mui/icons-material/Build';
+import LightbulbIcon from '@mui/icons-material/Lightbulb';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import FixedJoinButton from '@/components/FixedJoinButton';
+
+// Définition du thème personnalisé
+const theme = createTheme({
+  palette: {
+    primary: {
+      light: '#A0522D',
+      main: '#8B4513',
+      dark: '#654321',
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#D2691E',
+      main: '#CD853F',
+      dark: '#8B4513',
+      contrastText: '#fff',
+    },
+    background: {
+      default: '#f5f7fa',
+    },
+  },
+  shape: {
+    borderRadius: 12,
+  },
+  typography: {
+    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+    h4: {
+      fontWeight: 700,
+      letterSpacing: '-0.01em',
+    },
+    h6: {
+      fontWeight: 600,
+      letterSpacing: '0em',
+    },
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 12,
+          padding: '10px 16px',
+          textTransform: 'none',
+          fontWeight: 500,
+          boxShadow: 'none',
+          '&:hover': {
+            boxShadow: '0px 4px 8px rgba(139, 69, 19, 0.2)',
+          },
+        },
+        containedPrimary: {
+          '&:hover': {
+            backgroundColor: '#654321',
+          },
+        },
+        outlinedPrimary: {
+          borderWidth: '2px',
+          '&:hover': {
+            borderWidth: '2px',
+          },
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          borderRadius: 16,
+          overflow: 'hidden',
+          boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.08)',
+          transition: 'transform 0.3s, box-shadow 0.3s',
+          '&:hover': {
+            transform: 'translateY(-8px)',
+            boxShadow: '0px 15px 35px rgba(46, 125, 50, 0.1)',
+          },
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          borderRadius: 16,
+        },
+      },
+    },
+  },
+});
 
 const PageTitle = styled(Typography)(({ theme }) => ({
-  marginBottom: theme.spacing(4),
+  marginBottom: theme.spacing(5),
   position: 'relative',
   paddingBottom: theme.spacing(2),
   textAlign: 'center',
-  color: '#8B4513',
+  color: theme.palette.primary.main,
   fontWeight: 700,
   '&:after': {
     content: '""',
@@ -38,60 +131,48 @@ const PageTitle = styled(Typography)(({ theme }) => ({
     transform: 'translateX(-50%)',
     width: 80,
     height: 4,
-    backgroundColor: '#8B4513',
+    backgroundColor: theme.palette.primary.main,
     borderRadius: 2,
   },
 }));
 
-const SectionTitle = styled(Typography)(({ theme }) => ({
-  marginBottom: theme.spacing(3),
-  color: '#8B4513',
-  fontWeight: 600,
-  borderLeft: `3px solid #8B4513`,
-  paddingLeft: theme.spacing(2),
+const CardTitle = styled(Typography)(({ theme }) => ({
   fontSize: '1.25rem',
+  fontWeight: 600,
+  color: theme.palette.primary.main,
+  marginBottom: theme.spacing(2),
 }));
 
-const StyledCard = styled(Card)(({ theme }) => ({
-  height: '100%',
+const ProgramAvatar = styled(Avatar)(({ theme }) => ({
+  backgroundColor: theme.palette.primary.main,
+  width: 60,
+  height: 60,
+  boxShadow: '0 4px 10px rgba(46, 125, 50, 0.2)',
+  margin: '0 auto',
+  transform: 'translateY(-30px)',
+  marginBottom: '-10px',
+}));
+
+const DetailsBox = styled(Box)(({ theme }) => ({
+  marginTop: theme.spacing(2),
+  backgroundColor: 'rgba(139, 69, 19, 0.03)',
+  borderRadius: theme.shape.borderRadius,
+  padding: theme.spacing(2),
+}));
+
+const DetailItem = styled(Box)(({ theme }) => ({
   display: 'flex',
-  flexDirection: 'column',
-  borderRadius: 16,
-  boxShadow: '0 8px 24px rgba(0, 0, 0, 0.08)',
-  transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
-  '&:hover': {
-    transform: 'translateY(-8px)',
-    boxShadow: '0 12px 32px rgba(139, 69, 19, 0.15)',
-  },
-}));
-
-const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
-  height: 200,
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  position: 'relative',
-  '&::after': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    background: 'linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.6))',
-  },
-}));
-
-const StyledCardContent = styled(CardContent)(({ theme }) => ({
-  flexGrow: 1,
-  padding: theme.spacing(3),
+  alignItems: 'center',
+  marginBottom: theme.spacing(1),
 }));
 
 const programs = [
   {
+    id: 'education',
     title: 'Éducation et Formation',
     description: 'Promotion de l\'éducation de qualité et de la formation professionnelle pour tous les Sénégalais.',
-    icon: <SchoolIcon sx={{ fontSize: 40, color: '#8B4513' }} />,
-    image: '/images/education.jpg',
+    icon: <SchoolIcon sx={{ fontSize: 30 }} />,
+    image: 'https://via.placeholder.com/800x400/8B4513/FFFFFF?text=Éducation',
     details: [
       'Construction d\'écoles modernes',
       'Formation des enseignants',
@@ -100,10 +181,11 @@ const programs = [
     ],
   },
   {
+    id: 'emploi',
     title: 'Emploi et Entrepreneuriat',
     description: 'Création d\'emplois et soutien aux entrepreneurs pour stimuler la croissance économique.',
-    icon: <WorkIcon sx={{ fontSize: 40, color: '#8B4513' }} />,
-    image: '/images/employment.jpg',
+    icon: <WorkIcon sx={{ fontSize: 30 }} />,
+    image: 'https://via.placeholder.com/800x400/8B4513/FFFFFF?text=Emploi',
     details: [
       'Programmes de formation professionnelle',
       'Soutien aux PME',
@@ -112,10 +194,11 @@ const programs = [
     ],
   },
   {
+    id: 'sante',
     title: 'Santé et Protection Sociale',
     description: 'Amélioration de l\'accès aux soins de santé et renforcement de la protection sociale.',
-    icon: <HealthAndSafetyIcon sx={{ fontSize: 40, color: '#8B4513' }} />,
-    image: '/images/health.jpg',
+    icon: <LocalHospitalIcon sx={{ fontSize: 30 }} />,
+    image: 'https://via.placeholder.com/800x400/8B4513/FFFFFF?text=Santé',
     details: [
       'Construction d\'hôpitaux',
       'Programmes de vaccination',
@@ -124,10 +207,11 @@ const programs = [
     ],
   },
   {
+    id: 'agriculture',
     title: 'Agriculture et Développement Rural',
     description: 'Modernisation de l\'agriculture et développement des zones rurales.',
-    icon: <AgricultureIcon sx={{ fontSize: 40, color: '#8B4513' }} />,
-    image: '/images/agriculture.jpg',
+    icon: <AgricultureIcon sx={{ fontSize: 30 }} />,
+    image: 'https://via.placeholder.com/800x400/8B4513/FFFFFF?text=Agriculture',
     details: [
       'Mécanisation agricole',
       'Formation des agriculteurs',
@@ -136,10 +220,11 @@ const programs = [
     ],
   },
   {
+    id: 'infrastructure',
     title: 'Infrastructure et Développement Urbain',
     description: 'Développement des infrastructures et aménagement urbain durable.',
-    icon: <BusinessIcon sx={{ fontSize: 40, color: '#8B4513' }} />,
-    image: '/images/infrastructure.jpg',
+    icon: <BuildIcon sx={{ fontSize: 30 }} />,
+    image: 'https://via.placeholder.com/800x400/8B4513/FFFFFF?text=Infrastructure',
     details: [
       'Routes et ponts',
       'Énergie renouvelable',
@@ -148,10 +233,11 @@ const programs = [
     ],
   },
   {
+    id: 'innovation',
     title: 'Innovation et Numérique',
     description: 'Promotion de l\'innovation et du développement numérique.',
-    icon: <EmojiObjectsIcon sx={{ fontSize: 40, color: '#8B4513' }} />,
-    image: '/images/innovation.jpg',
+    icon: <LightbulbIcon sx={{ fontSize: 30 }} />,
+    image: 'https://via.placeholder.com/800x400/8B4513/FFFFFF?text=Innovation',
     details: [
       'Formation au numérique',
       'Startups technologiques',
@@ -161,102 +247,112 @@ const programs = [
   },
 ];
 
-export default function ProgrammePage() {
-  const theme = useTheme();
+export default function ProgrammesPage() {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Fade in={true} timeout={800}>
-        <Box>
-          <PageTitle variant="h4" gutterBottom>
-            Nos Programmes
-          </PageTitle>
-          
-          <Typography variant="body1" color="text.secondary" align="center" sx={{ mb: 6, maxWidth: 800, mx: 'auto' }}>
-            Découvrez nos programmes phares pour le développement du Sénégal. Chaque initiative est conçue pour répondre aux besoins spécifiques de notre société et contribuer à la construction d'un avenir meilleur.
-          </Typography>
+    <ThemeProvider theme={theme}>
+      <Box sx={{ py: 6, backgroundColor: 'background.default', pb: { xs: 8, sm: 6 } }}>
+        <Container maxWidth="lg">
+          <Fade in={true} timeout={800}>
+            <Box>
+              <PageTitle variant="h4" gutterBottom>
+                Nos Programmes
+              </PageTitle>
+              
+              <Box sx={{ mb: 5, maxWidth: '700px', mx: 'auto', textAlign: 'center' }}>
+                <Typography variant="subtitle1" color="text.secondary">
+                  L'Alliance Pour la République s'engage à mettre en œuvre des programmes innovants pour le développement du Sénégal. Découvrez nos principales initiatives pour un Sénégal fort, uni et prospère.
+                </Typography>
+              </Box>
 
-          <Grid container spacing={4}>
-            {programs.map((program, index) => (
-              <Grid item xs={12} md={6} lg={4} key={index}>
-                <StyledCard>
-                  <StyledCardMedia
-                    image={program.image}
-                    title={program.title}
-                  />
-                  <StyledCardContent>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                      {program.icon}
-                      <Typography variant="h6" component="h2" sx={{ ml: 1, color: '#8B4513' }}>
-                        {program.title}
-                      </Typography>
-                    </Box>
-                    
-                    <Typography variant="body2" color="text.secondary" paragraph>
-                      {program.description}
-                    </Typography>
-
-                    <Box sx={{ mt: 2 }}>
-                      {program.details.map((detail, idx) => (
+              <Grid container spacing={4}>
+                {programs.map((program) => (
+                  <Grid item xs={12} md={6} lg={4} key={program.id}>
+                    <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+                      <CardMedia
+                        component="img"
+                        height="180"
+                        image={program.image}
+                        alt={program.title}
+                      />
+                      <ProgramAvatar>
+                        {program.icon}
+                      </ProgramAvatar>
+                      <CardContent sx={{ flexGrow: 1, pt: 0 }}>
+                        <CardTitle align="center">
+                          {program.title}
+                        </CardTitle>
                         <Typography
-                          key={idx}
                           variant="body2"
-                          sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            mb: 1,
-                            color: '#666666',
-                          }}
+                          color="text.secondary"
+                          paragraph
+                          align="center"
+                          sx={{ mb: 3 }}
                         >
-                          • {detail}
+                          {program.description}
                         </Typography>
-                      ))}
-                    </Box>
-
-                    <Button
-                      variant="outlined"
-                      sx={{
-                        mt: 3,
-                        color: '#8B4513',
-                        borderColor: '#8B4513',
-                        '&:hover': {
-                          borderColor: '#5C2E0D',
-                          backgroundColor: 'rgba(139, 69, 19, 0.04)',
-                        },
-                      }}
-                    >
-                      En savoir plus
-                    </Button>
-                  </StyledCardContent>
-                </StyledCard>
+                        
+                        <DetailsBox>
+                          <Typography variant="subtitle2" color="primary" gutterBottom>
+                            Points clés :
+                          </Typography>
+                          {program.details.map((detail, index) => (
+                            <DetailItem key={index}>
+                              <CheckCircleOutlineIcon color="primary" sx={{ mr: 1, fontSize: 18 }} />
+                              <Typography variant="body2" color="text.secondary">
+                                {detail}
+                              </Typography>
+                            </DetailItem>
+                          ))}
+                        </DetailsBox>
+                      </CardContent>
+                      
+                      <CardActions sx={{ p: 2, pt: 0, justifyContent: 'center' }}>
+                        <Button
+                          component={Link}
+                          href={`/programmes/${program.id}`}
+                          variant="outlined"
+                          color="primary"
+                          endIcon={<ArrowForwardIcon />}
+                        >
+                          En savoir plus
+                        </Button>
+                      </CardActions>
+                    </Card>
+                  </Grid>
+                ))}
               </Grid>
-            ))}
-          </Grid>
-
-          <Box sx={{ mt: 8, textAlign: 'center' }}>
-            <Typography variant="h5" color="#8B4513" gutterBottom>
-              Rejoignez-nous pour construire l'avenir du Sénégal
-            </Typography>
-            <Typography variant="body1" color="text.secondary" sx={{ mb: 4, maxWidth: 600, mx: 'auto' }}>
-              Ensemble, nous pouvons faire la différence. Découvrez comment vous pouvez contribuer à nos programmes et initiatives.
-            </Typography>
-            <Button
-              variant="contained"
-              sx={{
-                backgroundColor: '#8B4513',
-                color: '#FFFFFF',
-                padding: '12px 32px',
-                '&:hover': {
-                  backgroundColor: '#5C2E0D',
-                },
-              }}
-            >
-              Devenir membre
-            </Button>
-          </Box>
-        </Box>
-      </Fade>
-    </Container>
+              
+              <Box sx={{ mt: 8, textAlign: 'center' }}>
+                <Chip 
+                  label="Explorez tous nos programmes" 
+                  color="primary" 
+                  variant="outlined" 
+                  sx={{ mb: 2 }} 
+                />
+                <Typography variant="h6" color="primary.dark" gutterBottom>
+                  Ensemble, construisons un Sénégal meilleur
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Nos programmes sont constamment mis à jour pour répondre aux besoins changeants de notre société.
+                  <br />Contactez-nous pour en savoir plus ou pour contribuer à nos initiatives.
+                </Typography>
+                <Button 
+                  variant="contained" 
+                  color="primary" 
+                  sx={{ mt: 3 }}
+                  component={Link}
+                  href="/contact"
+                >
+                  Nous contacter
+                </Button>
+              </Box>
+            </Box>
+          </Fade>
+        </Container>
+        <FixedJoinButton />
+      </Box>
+    </ThemeProvider>
   );
-} 
+}
