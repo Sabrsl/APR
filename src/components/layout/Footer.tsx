@@ -281,7 +281,7 @@ export const Footer = () => {
                 <FooterLink as={NextLink} href="/about">
                   À propos
                 </FooterLink>
-                <FooterLink as={NextLink} href="/news">
+                <FooterLink as={NextLink} href="/actualites">
                   Actualités
                 </FooterLink>
                 <FooterLink as={NextLink} href="/programmes">

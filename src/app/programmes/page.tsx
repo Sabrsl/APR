@@ -19,7 +19,11 @@ import {
   Paper,
   Avatar,
   CardActions,
-  Chip
+  Chip,
+  Stack,
+  IconButton,
+  Breadcrumbs,
+  Link as MuiLink
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Link from 'next/link';
@@ -32,6 +36,8 @@ import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import FixedJoinButton from '@/components/FixedJoinButton';
+import Navigation from '@/components/Navigation';
+import HomeIcon from '@mui/icons-material/Home';
 
 // Définition du thème personnalisé
 const theme = createTheme({
@@ -247,12 +253,27 @@ const programs = [
   },
 ];
 
-export default function ProgrammesPage() {
+export default function ProgramsPage() {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ py: 6, backgroundColor: 'background.default', pb: { xs: 8, sm: 6 } }}>
+      <Box sx={{ backgroundColor: 'background.default', minHeight: '100vh', pb: { xs: 8, sm: 6 } }}>
+        <Navigation />
+
+        {/* Fil d'Ariane */}
+        <Container maxWidth="lg" sx={{ pt: 3 }}>
+          <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 4 }}>
+            <Link href="/" passHref>
+              <MuiLink underline="hover" color="inherit" sx={{ display: 'flex', alignItems: 'center' }}>
+                <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+                Accueil
+              </MuiLink>
+            </Link>
+            <Typography color="text.primary">Programmes</Typography>
+          </Breadcrumbs>
+        </Container>
+
         <Container maxWidth="lg">
           <Fade in={true} timeout={800}>
             <Box>

@@ -30,7 +30,7 @@ export const Header = () => {
   const menuItems = [
     { name: "Accueil", path: "/" },
     { name: "À propos", path: "/about" },
-    { name: "Actualités", path: "/news" },
+    { name: "Actualités", path: "/actualites" },
     { name: "Programmes", path: "/programmes" },
     { name: "Adhésion", path: "/join" },
     { name: "Contact", path: "/contact" },

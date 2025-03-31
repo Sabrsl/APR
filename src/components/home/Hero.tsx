@@ -250,7 +250,7 @@ export const Hero = () => {
                   transition={{ duration: 0.5, delay: 1.2 }}
                   whileHover={{ x: 5 }}
                 >
-                  <Link href="/news" className="text-primary font-medium flex items-center hover:underline">
+                  <Link href="/actualites" className="text-primary font-medium flex items-center hover:underline">
                     Toutes les actualités 
                     <motion.span
                       animate={{ x: [0, 5, 0] }}
