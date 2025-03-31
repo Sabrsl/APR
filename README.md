@@ -1,36 +1,98 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# APR Sénégal - Site Web Officiel
 
-## Getting Started
+Site web professionnel pour le parti politique "Alliance Pour la République" (APR) du Sénégal.
 
-First, run the development server:
+## Technologies utilisées
 
+- **Frontend**: Next.js avec TypeScript, Tailwind CSS, Framer Motion
+- **Backend**: Node.js avec Express
+- **Formulaires**: Formik, Yup, React Hook Form
+- **Stockage temporaire**: JSON files (pour la démonstration)
+- **Déploiement**: Docker
+
+## Fonctionnalités
+
+- Site responsive (mobile et desktop)
+- Pages principales : Accueil, À propos, Actualités, Adhésion, Contact, Mentions légales
+- Formulaire d'adhésion avec validation
+- Formulaire de contact
+- Filtrage des actualités par catégorie et recherche
+- Animations fluides avec Framer Motion
+
+## Installation et démarrage
+
+1. Clonez le dépôt:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <url-du-repo>
+cd apr-senegal.com
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Installez les dépendances:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Créez un fichier `.env` à la racine du projet avec le contenu suivant:
+```
+PORT=5000
+API_URL=http://localhost:5000
+NEXT_PUBLIC_API_URL=http://localhost:5000
+MONGODB_URI=mongodb://localhost:27017/apr-senegal
+SESSION_SECRET=apr-senegal-secret-key
+UPLOAD_DIR=src/server/uploads
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Démarrez le serveur de développement Next.js:
+```bash
+npm run dev
+```
 
-## Learn More
+5. Dans un autre terminal, démarrez le serveur backend:
+```bash
+npm run dev:server
+```
 
-To learn more about Next.js, take a look at the following resources:
+6. Accédez au site dans votre navigateur à l'adresse [http://localhost:3000](http://localhost:3000)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Déploiement avec Docker
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Prérequis
+- Docker et Docker Compose installés sur votre serveur
 
-## Deploy on Vercel
+### Construction et démarrage
+1. Créez un fichier `.env.production` avec les variables d'environnement pour la production.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. Construction et démarrage avec Docker Compose:
+```bash
+docker-compose up -d --build
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. Le site sera disponible à l'adresse [http://localhost:3000](http://localhost:3000) ou sur le domaine configuré.
+
+### Mise à jour
+Pour mettre à jour le site après des modifications:
+```bash
+git pull
+docker-compose up -d --build
+```
+
+### Arrêt
+Pour arrêter les services:
+```bash
+docker-compose down
+```
+
+## Structure du projet
+
+- `src/app`: Pages de l'application Next.js
+- `src/components`: Composants React réutilisables
+- `src/server`: API backend Express
+- `public`: Fichiers statiques (images, etc.)
+
+## Contributions
+
+Ce projet est open-source. N'hésitez pas à soumettre des pull requests pour améliorer le site.
+
+## Licence
+
+MIT

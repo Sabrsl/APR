@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    restart: always
+    environment:
+      - NODE_ENV=production
+    # Décommentez les lignes suivantes si vous avez des variables d'environnement
+    # env_file:
+    #   - .env.production 
