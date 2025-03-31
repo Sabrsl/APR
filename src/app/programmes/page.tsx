@@ -14,8 +14,6 @@ import {
   useMediaQuery,
   Fade,
   Divider,
-  ThemeProvider,
-  createTheme,
   Paper,
   Avatar,
   CardActions,
@@ -38,89 +36,6 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import FixedJoinButton from '@/components/FixedJoinButton';
 import Navigation from '@/components/Navigation';
 import HomeIcon from '@mui/icons-material/Home';
-
-// Définition du thème personnalisé
-const theme = createTheme({
-  palette: {
-    primary: {
-      light: '#A0522D',
-      main: '#8B4513',
-      dark: '#654321',
-      contrastText: '#fff',
-    },
-    secondary: {
-      light: '#D2691E',
-      main: '#CD853F',
-      dark: '#8B4513',
-      contrastText: '#fff',
-    },
-    background: {
-      default: '#f5f7fa',
-    },
-  },
-  shape: {
-    borderRadius: 12,
-  },
-  typography: {
-    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-    h4: {
-      fontWeight: 700,
-      letterSpacing: '-0.01em',
-    },
-    h6: {
-      fontWeight: 600,
-      letterSpacing: '0em',
-    },
-  },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          borderRadius: 12,
-          padding: '10px 16px',
-          textTransform: 'none',
-          fontWeight: 500,
-          boxShadow: 'none',
-          '&:hover': {
-            boxShadow: '0px 4px 8px rgba(139, 69, 19, 0.2)',
-          },
-        },
-        containedPrimary: {
-          '&:hover': {
-            backgroundColor: '#654321',
-          },
-        },
-        outlinedPrimary: {
-          borderWidth: '2px',
-          '&:hover': {
-            borderWidth: '2px',
-          },
-        },
-      },
-    },
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          borderRadius: 16,
-          overflow: 'hidden',
-          boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.08)',
-          transition: 'transform 0.3s, box-shadow 0.3s',
-          '&:hover': {
-            transform: 'translateY(-8px)',
-            boxShadow: '0px 15px 35px rgba(46, 125, 50, 0.1)',
-          },
-        },
-      },
-    },
-    MuiPaper: {
-      styleOverrides: {
-        root: {
-          borderRadius: 16,
-        },
-      },
-    },
-  },
-});
 
 const PageTitle = styled(Typography)(({ theme }) => ({
   marginBottom: theme.spacing(5),
@@ -153,7 +68,7 @@ const ProgramAvatar = styled(Avatar)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
   width: 60,
   height: 60,
-  boxShadow: '0 4px 10px rgba(46, 125, 50, 0.2)',
+  boxShadow: '0 4px 10px rgba(139, 69, 19, 0.2)',
   margin: '0 auto',
   transform: 'translateY(-30px)',
   marginBottom: '-10px',
@@ -172,13 +87,27 @@ const DetailItem = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(1),
 }));
 
-const programs = [
+const StyledLink = styled(Link)({
+  textDecoration: 'none',
+  color: 'inherit',
+});
+
+interface Program {
+  id: string;
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+  image: string;
+  details: string[];
+}
+
+const programs: Program[] = [
   {
     id: 'education',
     title: 'Éducation et Formation',
     description: 'Promotion de l\'éducation de qualité et de la formation professionnelle pour tous les Sénégalais.',
     icon: <SchoolIcon sx={{ fontSize: 30 }} />,
-    image: 'https://via.placeholder.com/800x400/8B4513/FFFFFF?text=Éducation',
+    image: '/images/programs/education.jpg',
     details: [
       'Construction d\'écoles modernes',
       'Formation des enseignants',
@@ -191,7 +120,7 @@ const programs = [
     title: 'Emploi et Entrepreneuriat',
     description: 'Création d\'emplois et soutien aux entrepreneurs pour stimuler la croissance économique.',
     icon: <WorkIcon sx={{ fontSize: 30 }} />,
-    image: 'https://via.placeholder.com/800x400/8B4513/FFFFFF?text=Emploi',
+    image: '/images/programs/employment.jpg',
     details: [
       'Programmes de formation professionnelle',
       'Soutien aux PME',
@@ -253,127 +182,128 @@ const programs = [
   },
 ];
 
-export default function ProgramsPage() {
+const ProgramsPage: React.FC = () => {
+  const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
-    <ThemeProvider theme={theme}>
-      <Box sx={{ backgroundColor: 'background.default', minHeight: '100vh', pb: { xs: 8, sm: 6 } }}>
-        <Navigation />
+    <Box sx={{ backgroundColor: 'background.default', minHeight: '100vh', pb: { xs: 8, sm: 6 } }}>
+      <Navigation />
+      
+      {/* Fil d'Ariane */}
+      <Container maxWidth="lg" sx={{ pt: 3 }}>
+        <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 4 }}>
+          <StyledLink href="/">
+            <MuiLink underline="hover" color="inherit" sx={{ display: 'flex', alignItems: 'center' }}>
+              <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+              Accueil
+            </MuiLink>
+          </StyledLink>
+          <Typography color="text.primary">Programmes</Typography>
+        </Breadcrumbs>
+      </Container>
 
-        {/* Fil d'Ariane */}
-        <Container maxWidth="lg" sx={{ pt: 3 }}>
-          <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 4 }}>
-            <Link href="/" passHref>
-              <MuiLink underline="hover" color="inherit" sx={{ display: 'flex', alignItems: 'center' }}>
-                <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-                Accueil
-              </MuiLink>
-            </Link>
-            <Typography color="text.primary">Programmes</Typography>
-          </Breadcrumbs>
-        </Container>
+      <Container maxWidth="lg">
+        <Fade in={true} timeout={800}>
+          <Box>
+            <PageTitle variant="h4" gutterBottom>
+              Nos Programmes
+            </PageTitle>
+            
+            <Box sx={{ mb: 5, maxWidth: '700px', mx: 'auto', textAlign: 'center' }}>
+              <Typography variant="subtitle1" color="text.secondary">
+                L'Alliance Pour la République s'engage à mettre en œuvre des programmes innovants pour le développement du Sénégal. Découvrez nos principales initiatives pour un Sénégal fort, uni et prospère.
+              </Typography>
+            </Box>
 
-        <Container maxWidth="lg">
-          <Fade in={true} timeout={800}>
-            <Box>
-              <PageTitle variant="h4" gutterBottom>
-                Nos Programmes
-              </PageTitle>
-              
-              <Box sx={{ mb: 5, maxWidth: '700px', mx: 'auto', textAlign: 'center' }}>
-                <Typography variant="subtitle1" color="text.secondary">
-                  L'Alliance Pour la République s'engage à mettre en œuvre des programmes innovants pour le développement du Sénégal. Découvrez nos principales initiatives pour un Sénégal fort, uni et prospère.
-                </Typography>
-              </Box>
-
-              <Grid container spacing={4}>
-                {programs.map((program) => (
-                  <Grid item xs={12} md={6} lg={4} key={program.id}>
-                    <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', position: 'relative' }}>
-                      <CardMedia
-                        component="img"
-                        height="180"
-                        image={program.image}
-                        alt={program.title}
-                      />
-                      <ProgramAvatar>
-                        {program.icon}
-                      </ProgramAvatar>
-                      <CardContent sx={{ flexGrow: 1, pt: 0 }}>
-                        <CardTitle align="center">
-                          {program.title}
-                        </CardTitle>
-                        <Typography
-                          variant="body2"
-                          color="text.secondary"
-                          paragraph
-                          align="center"
-                          sx={{ mb: 3 }}
-                        >
-                          {program.description}
-                        </Typography>
-                        
-                        <DetailsBox>
-                          <Typography variant="subtitle2" color="primary" gutterBottom>
-                            Points clés :
-                          </Typography>
-                          {program.details.map((detail, index) => (
-                            <DetailItem key={index}>
-                              <CheckCircleOutlineIcon color="primary" sx={{ mr: 1, fontSize: 18 }} />
-                              <Typography variant="body2" color="text.secondary">
-                                {detail}
-                              </Typography>
-                            </DetailItem>
-                          ))}
-                        </DetailsBox>
-                      </CardContent>
+            <Grid container spacing={4}>
+              {programs.map((program) => (
+                <Grid item xs={12} md={6} lg={4} key={program.id}>
+                  <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+                    <CardMedia
+                      component="img"
+                      height="180"
+                      image={program.image}
+                      alt={program.title}
+                    />
+                    <ProgramAvatar>
+                      {program.icon}
+                    </ProgramAvatar>
+                    <CardContent sx={{ flexGrow: 1, pt: 0 }}>
+                      <CardTitle align="center">
+                        {program.title}
+                      </CardTitle>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        paragraph
+                        align="center"
+                        sx={{ mb: 3 }}
+                      >
+                        {program.description}
+                      </Typography>
                       
-                      <CardActions sx={{ p: 2, pt: 0, justifyContent: 'center' }}>
+                      <DetailsBox>
+                        <Typography variant="subtitle2" color="primary" gutterBottom>
+                          Points clés :
+                        </Typography>
+                        {program.details.map((detail, index) => (
+                          <DetailItem key={index}>
+                            <CheckCircleOutlineIcon color="primary" sx={{ mr: 1, fontSize: 18 }} />
+                            <Typography variant="body2" color="text.secondary">
+                              {detail}
+                            </Typography>
+                          </DetailItem>
+                        ))}
+                      </DetailsBox>
+                    </CardContent>
+                    
+                    <CardActions sx={{ p: 3, pt: 0 }}>
+                      <StyledLink href={`/programmes/${program.id}`}>
                         <Button
-                          component={Link}
-                          href={`/programmes/${program.id}`}
-                          variant="outlined"
+                          variant="contained"
                           color="primary"
-                          endIcon={<ArrowForwardIcon />}
+                          fullWidth
                         >
                           En savoir plus
                         </Button>
-                      </CardActions>
-                    </Card>
-                  </Grid>
-                ))}
-              </Grid>
-              
-              <Box sx={{ mt: 8, textAlign: 'center' }}>
-                <Chip 
-                  label="Explorez tous nos programmes" 
-                  color="primary" 
-                  variant="outlined" 
-                  sx={{ mb: 2 }} 
-                />
-                <Typography variant="h6" color="primary.dark" gutterBottom>
-                  Ensemble, construisons un Sénégal meilleur
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Nos programmes sont constamment mis à jour pour répondre aux besoins changeants de notre société.
-                  <br />Contactez-nous pour en savoir plus ou pour contribuer à nos initiatives.
-                </Typography>
+                      </StyledLink>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+            
+            <Box sx={{ mt: 8, textAlign: 'center' }}>
+              <Chip 
+                label="Explorez tous nos programmes" 
+                color="primary" 
+                variant="outlined" 
+                sx={{ mb: 2 }} 
+              />
+              <Typography variant="h6" color="primary.dark" gutterBottom>
+                Ensemble, construisons un Sénégal meilleur
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Nos programmes sont constamment mis à jour pour répondre aux besoins changeants de notre société.
+                <br />Contactez-nous pour en savoir plus ou pour contribuer à nos initiatives.
+              </Typography>
+              <StyledLink href="/contact">
                 <Button 
                   variant="contained" 
                   color="primary" 
                   sx={{ mt: 3 }}
-                  component={Link}
-                  href="/contact"
                 >
                   Nous contacter
                 </Button>
-              </Box>
+              </StyledLink>
             </Box>
-          </Fade>
-        </Container>
-        <FixedJoinButton />
-      </Box>
-    </ThemeProvider>
+          </Box>
+        </Fade>
+      </Container>
+      <FixedJoinButton />
+    </Box>
   );
-}
+};
+
+export default ProgramsPage;

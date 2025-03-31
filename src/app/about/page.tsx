@@ -10,7 +10,6 @@ import {
   CardContent,
   Button,
   ThemeProvider,
-  createTheme,
   Paper,
   Divider,
   Breadcrumbs,
@@ -62,119 +61,11 @@ import {
 } from '@mui/lab';
 import Navigation from '@/components/Navigation';
 import HomeIcon from '@mui/icons-material/Home';
-
-// Définition du thème personnalisé avec les couleurs marron
-const theme = createTheme({
-  palette: {
-    primary: {
-      light: '#A0522D',
-      main: '#8B4513',
-      dark: '#654321',
-      contrastText: '#fff',
-    },
-    secondary: {
-      light: '#D2691E',
-      main: '#CD853F',
-      dark: '#8B4513',
-      contrastText: '#fff',
-    },
-    background: {
-      default: '#f5f7fa',
-      paper: '#ffffff',
-    },
-  },
-  shape: {
-    borderRadius: 12,
-  },
-  typography: {
-    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-    h3: {
-      fontWeight: 700,
-      letterSpacing: '-0.01em',
-    },
-    h4: {
-      fontWeight: 700,
-      letterSpacing: '-0.01em',
-    },
-    h5: {
-      fontWeight: 600,
-    },
-    h6: {
-      fontWeight: 600,
-    },
-  },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          borderRadius: 12,
-          padding: '10px 16px',
-          textTransform: 'none',
-          fontWeight: 500,
-          boxShadow: 'none',
-          '&:hover': {
-            boxShadow: '0px 4px 8px rgba(139, 69, 19, 0.2)',
-          },
-        },
-        containedPrimary: {
-          '&:hover': {
-            backgroundColor: '#654321',
-          },
-        },
-        outlinedPrimary: {
-          borderWidth: '2px',
-          '&:hover': {
-            borderWidth: '2px',
-          },
-        },
-      },
-    },
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          borderRadius: 16,
-          boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.08)',
-        },
-      },
-    },
-    MuiPaper: {
-      styleOverrides: {
-        root: {
-          borderRadius: 16,
-        },
-      },
-    },
-    MuiDivider: {
-      styleOverrides: {
-        root: {
-          margin: '24px 0',
-        },
-      },
-    },
-    MuiChip: {
-      styleOverrides: {
-        root: {
-          borderRadius: 8,
-          fontWeight: 500,
-        },
-        outlinedPrimary: {
-          borderWidth: '1.5px',
-        },
-      },
-    },
-    MuiTimelineDot: {
-      styleOverrides: {
-        root: {
-          boxShadow: 'none',
-        },
-      },
-    },
-  },
-});
+import theme from '@/theme/theme';
 
 // Styled components
 const HeroSection = styled(Box)(({ theme }) => ({
-  background: `linear-gradient(rgba(139, 69, 19, 0.85), rgba(139, 69, 19, 0.95)), url('https://via.placeholder.com/1920x800/8B4513/FFFFFF?text=APR') no-repeat center center`,
+  background: `linear-gradient(rgba(139, 69, 19, 0.85), rgba(139, 69, 19, 0.95)), url('/images/about-bg.jpg') no-repeat center center`,
   backgroundSize: 'cover',
   color: 'white',
   padding: theme.spacing(10, 0),

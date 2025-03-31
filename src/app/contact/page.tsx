@@ -22,7 +22,6 @@ import {
   Fade,
   Avatar,
   ThemeProvider,
-  createTheme,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -36,94 +35,7 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import SendIcon from '@mui/icons-material/Send';
-
-// Définition du thème personnalisé
-const theme = createTheme({
-  palette: {
-    primary: {
-      light: '#DEB887',
-      main: '#8B4513',
-      dark: '#5C2E0D',
-      contrastText: '#fff',
-    },
-    secondary: {
-      light: '#DEB887',
-      main: '#8B4513',
-      dark: '#5C2E0D',
-      contrastText: '#fff',
-    },
-    background: {
-      default: '#f5f7fa',
-    },
-  },
-  shape: {
-    borderRadius: 12,
-  },
-  typography: {
-    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-    h4: {
-      fontWeight: 700,
-      letterSpacing: '-0.01em',
-    },
-    h6: {
-      fontWeight: 600,
-      letterSpacing: '0em',
-    },
-  },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          borderRadius: 12,
-          padding: '12px 24px',
-          fontSize: '1rem',
-          boxShadow: 'none',
-          '&:hover': {
-            boxShadow: '0px 4px 8px rgba(139, 69, 19, 0.1)',
-          },
-        },
-        containedPrimary: {
-          '&:hover': {
-            backgroundColor: '#5C2E0D',
-          },
-        },
-      },
-    },
-    MuiPaper: {
-      styleOverrides: {
-        root: {
-          borderRadius: 16,
-        },
-        elevation1: {
-          boxShadow: '0px 5px 15px rgba(139, 69, 19, 0.05)',
-        },
-        elevation3: {
-          boxShadow: '0px 10px 30px rgba(139, 69, 19, 0.1)',
-        },
-      },
-    },
-    MuiTextField: {
-      styleOverrides: {
-        root: {
-          '& .MuiOutlinedInput-root': {
-            borderRadius: 12,
-            '&:hover fieldset': {
-              borderColor: '#8B4513',
-            },
-          },
-        },
-      },
-    },
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          borderRadius: 16,
-          boxShadow: '0px 5px 15px rgba(139, 69, 19, 0.05)',
-        },
-      },
-    },
-  },
-});
+import theme from '@/theme/theme';
 
 // Styled components
 const StyledPaper = styled(Paper)(({ theme }) => ({

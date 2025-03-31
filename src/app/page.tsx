@@ -10,7 +10,6 @@ import {
   CardContent,
   Button,
   ThemeProvider,
-  createTheme,
   Paper,
   Divider,
   useMediaQuery,
@@ -46,109 +45,11 @@ import ContactMailIcon from '@mui/icons-material/ContactMail';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import Navigation from '@/components/Navigation';
-
-// Définition du thème personnalisé avec les couleurs marron
-const theme = createTheme({
-  palette: {
-    primary: {
-      light: '#A0522D',
-      main: '#8B4513',
-      dark: '#654321',
-      contrastText: '#fff',
-    },
-    secondary: {
-      light: '#D2691E',
-      main: '#CD853F',
-      dark: '#8B4513',
-      contrastText: '#fff',
-    },
-    background: {
-      default: '#f5f7fa',
-      paper: '#ffffff',
-    },
-  },
-  shape: {
-    borderRadius: 12,
-  },
-  typography: {
-    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-    h1: {
-      fontWeight: 700,
-      letterSpacing: '-0.02em',
-    },
-    h2: {
-      fontWeight: 700,
-      letterSpacing: '-0.01em',
-    },
-    h3: {
-      fontWeight: 700,
-      letterSpacing: '-0.01em',
-    },
-    h4: {
-      fontWeight: 700,
-      letterSpacing: '-0.01em',
-    },
-    h5: {
-      fontWeight: 600,
-    },
-    h6: {
-      fontWeight: 600,
-    },
-  },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          borderRadius: 12,
-          padding: '10px 16px',
-          textTransform: 'none',
-          fontWeight: 500,
-          boxShadow: 'none',
-          '&:hover': {
-            boxShadow: '0px 4px 8px rgba(139, 69, 19, 0.2)',
-          },
-        },
-        containedPrimary: {
-          '&:hover': {
-            backgroundColor: '#654321',
-          },
-        },
-        outlinedPrimary: {
-          borderWidth: '2px',
-          '&:hover': {
-            borderWidth: '2px',
-          },
-        },
-      },
-    },
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          borderRadius: 16,
-          boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.08)',
-        },
-      },
-    },
-    MuiPaper: {
-      styleOverrides: {
-        root: {
-          borderRadius: 16,
-        },
-      },
-    },
-    MuiDivider: {
-      styleOverrides: {
-        root: {
-          margin: '24px 0',
-        },
-      },
-    },
-  },
-});
+import theme from '@/theme/theme';
 
 // Styled components
 const HeroSection = styled(Box)(({ theme }) => ({
-  background: `linear-gradient(rgba(139, 69, 19, 0.85), rgba(139, 69, 19, 0.95)), url('https://via.placeholder.com/1920x800/8B4513/FFFFFF?text=APR') no-repeat center center`,
+  background: `linear-gradient(rgba(139, 69, 19, 0.85), rgba(139, 69, 19, 0.95)), url('/images/hero-bg.jpg') no-repeat center center`,
   backgroundSize: 'cover',
   color: 'white',
   padding: theme.spacing(15, 0),
@@ -460,19 +361,19 @@ export default function HomePage() {
                   <Typography variant="h6" sx={{ maxWidth: 800, mb: 4, fontWeight: 'normal' }}>
                     {homeContent.hero.description}
                   </Typography>
-                  <Button 
-                    variant="contained" 
-                    endIcon={<ArrowForwardIcon />}
-                    sx={{ 
-                      bgcolor: 'white', 
-                      color: 'primary.main',
-                      '&:hover': { bgcolor: 'rgba(255,255,255,0.9)' }
-                    }}
-                    component={Link}
-                    href="/join"
-                  >
-                    {homeContent.hero.cta}
-                  </Button>
+                  <StyledLink href="/join">
+                    <Button 
+                      variant="contained" 
+                      endIcon={<ArrowForwardIcon />}
+                      sx={{ 
+                        bgcolor: 'white', 
+                        color: 'primary.main',
+                        '&:hover': { bgcolor: 'rgba(255,255,255,0.9)' }
+                      }}
+                    >
+                      {homeContent.hero.cta}
+                    </Button>
+                  </StyledLink>
                 </Grid>
               </Grid>
             </Container>
@@ -511,15 +412,15 @@ export default function HomePage() {
                       <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
                         {program.description}
                       </Typography>
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                        component={Link}
-                        href={program.link}
-                        endIcon={<ArrowForwardIcon />}
-                      >
-                        En savoir plus
-                      </Button>
+                      <StyledLink href={program.link}>
+                        <Button
+                          variant="outlined"
+                          color="primary"
+                          endIcon={<ArrowForwardIcon />}
+                        >
+                          En savoir plus
+                        </Button>
+                      </StyledLink>
                     </CardContent>
                   </ProgramCard>
                 </Grid>
@@ -592,15 +493,15 @@ export default function HomePage() {
               ))}
             </Grid>
             <Box sx={{ mt: 4, textAlign: 'center' }}>
-              <Button
-                variant="outlined"
-                color="primary"
-                component={Link}
-                href="/actualites"
-                endIcon={<ArrowForwardIcon />}
-              >
-                Voir toutes les actualités
-              </Button>
+              <StyledLink href="/actualites">
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  endIcon={<ArrowForwardIcon />}
+                >
+                  Voir toutes les actualités
+                </Button>
+              </StyledLink>
             </Box>
           </StyledPaper>
 
@@ -624,30 +525,30 @@ export default function HomePage() {
                       <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
                         {event.description}
                       </Typography>
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                        component={Link}
-                        href={event.link}
-                        endIcon={<ArrowForwardIcon />}
-                      >
-                        Détails
-                      </Button>
+                      <StyledLink href={event.link}>
+                        <Button
+                          variant="outlined"
+                          color="primary"
+                          endIcon={<ArrowForwardIcon />}
+                        >
+                          Détails
+                        </Button>
+                      </StyledLink>
                     </CardContent>
                   </EventCard>
                 </Grid>
               ))}
             </Grid>
             <Box sx={{ mt: 4, textAlign: 'center' }}>
-              <Button
-                variant="outlined"
-                color="primary"
-                component={Link}
-                href="/evenements"
-                endIcon={<ArrowForwardIcon />}
-              >
-                Voir tous les événements
-              </Button>
+              <StyledLink href="/evenements">
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  endIcon={<ArrowForwardIcon />}
+                >
+                  Voir tous les événements
+                </Button>
+              </StyledLink>
             </Box>
           </StyledPaper>
 
@@ -681,26 +582,26 @@ export default function HomePage() {
               Ensemble, nous pouvons construire un Sénégal meilleur. Rejoignez l'APR et participez à la transformation de notre pays.
             </Typography>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="center">
-              <Button
-                variant="contained"
-                color="primary"
-                size="large"
-                component={Link}
-                href="/join"
-                endIcon={<ArrowForwardIcon />}
-              >
-                Adhérer à l'APR
-              </Button>
-              <Button
-                variant="outlined"
-                color="primary"
-                size="large"
-                component={Link}
-                href="/contact"
-                endIcon={<ArrowForwardIcon />}
-              >
-                Nous contacter
-              </Button>
+              <StyledLink href="/join">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                  endIcon={<ArrowForwardIcon />}
+                >
+                  Adhérer à l'APR
+                </Button>
+              </StyledLink>
+              <StyledLink href="/contact">
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  size="large"
+                  endIcon={<ArrowForwardIcon />}
+                >
+                  Nous contacter
+                </Button>
+              </StyledLink>
             </Stack>
           </StyledPaper>
 

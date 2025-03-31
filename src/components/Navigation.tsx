@@ -38,7 +38,7 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
   },
 }));
 
-const NavButton = styled(Button)<{ component?: React.ElementType }>(({ theme }) => ({
+const NavButton = styled(Button)(({ theme }) => ({
   color: theme.palette.primary.main,
   margin: theme.spacing(0, 1),
   padding: theme.spacing(1, 2),
@@ -105,7 +105,9 @@ export default function Navigation() {
     <StyledAppBar position="fixed" color="default" elevation={0}>
       <Container maxWidth="lg">
         <Toolbar disableGutters>
-          <Logo src="/logo.png" alt="APR Logo" />
+          <StyledLink href="/">
+            <Logo src="/logo.png" alt="APR Logo" />
+          </StyledLink>
           
           {isMobile ? (
             <>
@@ -167,14 +169,11 @@ export default function Navigation() {
             <>
               <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
                 {menuItems.map((item) => (
-                  <NavButton
-                    key={item.text}
-                    component={Link}
-                    href={item.href}
-                    startIcon={item.icon}
-                  >
-                    {item.text}
-                  </NavButton>
+                  <StyledLink key={item.text} href={item.href}>
+                    <NavButton startIcon={item.icon}>
+                      {item.text}
+                    </NavButton>
+                  </StyledLink>
                 ))}
               </Box>
               <StyledLink href="/join">

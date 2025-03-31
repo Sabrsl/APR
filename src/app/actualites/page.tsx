@@ -11,7 +11,6 @@ import {
   CardMedia,
   Button,
   ThemeProvider,
-  createTheme,
   Tabs,
   Tab,
   Chip,
@@ -38,128 +37,11 @@ import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import FixedJoinButton from '@/components/FixedJoinButton';
 import Navigation from '@/components/Navigation';
 import HomeIcon from '@mui/icons-material/Home';
-
-// Définition du thème personnalisé avec les couleurs marron originales
-const theme = createTheme({
-  palette: {
-    primary: {
-      light: '#A0522D',
-      main: '#8B4513',
-      dark: '#654321',
-      contrastText: '#fff',
-    },
-    secondary: {
-      light: '#D2691E',
-      main: '#CD853F',
-      dark: '#8B4513',
-      contrastText: '#fff',
-    },
-    background: {
-      default: '#f5f7fa',
-      paper: '#ffffff',
-    },
-  },
-  shape: {
-    borderRadius: 12,
-  },
-  typography: {
-    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-    h3: {
-      fontWeight: 700,
-      letterSpacing: '-0.01em',
-    },
-    h4: {
-      fontWeight: 700,
-      letterSpacing: '-0.01em',
-    },
-    h5: {
-      fontWeight: 600,
-    },
-    h6: {
-      fontWeight: 600,
-    },
-  },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          borderRadius: 12,
-          padding: '10px 16px',
-          textTransform: 'none',
-          fontWeight: 500,
-          boxShadow: 'none',
-          '&:hover': {
-            boxShadow: '0px 4px 8px rgba(139, 69, 19, 0.2)',
-          },
-        },
-        containedPrimary: {
-          '&:hover': {
-            backgroundColor: '#654321',
-          },
-        },
-        outlinedPrimary: {
-          borderWidth: '2px',
-          '&:hover': {
-            borderWidth: '2px',
-          },
-        },
-      },
-    },
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          borderRadius: 16,
-          overflow: 'hidden',
-          boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.08)',
-          transition: 'transform 0.3s, box-shadow 0.3s',
-          '&:hover': {
-            transform: 'translateY(-8px)',
-            boxShadow: '0px 15px 35px rgba(139, 69, 19, 0.1)',
-          },
-        },
-      },
-    },
-    MuiPaper: {
-      styleOverrides: {
-        root: {
-          borderRadius: 16,
-        },
-      },
-    },
-    MuiDivider: {
-      styleOverrides: {
-        root: {
-          margin: '24px 0',
-        },
-      },
-    },
-    MuiChip: {
-      styleOverrides: {
-        root: {
-          borderRadius: 8,
-          fontWeight: 500,
-        },
-        outlinedPrimary: {
-          borderWidth: '1.5px',
-        },
-      },
-    },
-    MuiTab: {
-      styleOverrides: {
-        root: {
-          transition: 'all 0.2s',
-          '&.Mui-selected': {
-            backgroundColor: 'rgba(139, 69, 19, 0.08)',
-          },
-        },
-      },
-    },
-  },
-});
+import theme from '@/theme/theme';
 
 // Styled components
 const HeroSection = styled(Box)(({ theme }) => ({
-  background: `linear-gradient(rgba(139, 69, 19, 0.85), rgba(139, 69, 19, 0.95)), url('https://via.placeholder.com/1920x600/8B4513/FFFFFF?text=Actualités') no-repeat center center`,
+  background: `linear-gradient(rgba(139, 69, 19, 0.85), rgba(139, 69, 19, 0.95)), url('/images/news-bg.jpg') no-repeat center center`,
   backgroundSize: 'cover',
   color: 'white',
   padding: theme.spacing(10, 0),
@@ -298,7 +180,7 @@ export default function ActualitesPage() {
         {/* Fil d'Ariane */}
         <Container maxWidth="lg" sx={{ pt: 3 }}>
           <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 4 }}>
-            <Link href="/" passHref>
+            <Link href="/" style={{ textDecoration: 'none' }}>
               <MuiLink underline="hover" color="inherit" sx={{ display: 'flex', alignItems: 'center' }}>
                 <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
                 Accueil
@@ -443,14 +325,14 @@ export default function ActualitesPage() {
                       px: 3,
                       py: 2
                     }}>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        component={Link}
-                        href={`/actualites/${news.id}`}
-                      >
-                        Lire la suite
-                      </Button>
+                      <Link href={`/actualites/${news.id}`} style={{ textDecoration: 'none' }}>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                        >
+                          Lire la suite
+                        </Button>
+                      </Link>
                       <Box>
                         <SocialButton size="small" sx={{ mr: 1 }}>
                           <ShareIcon fontSize="small" />
@@ -488,14 +370,16 @@ export default function ActualitesPage() {
           {/* Bouton Voir plus */}
           {filteredNews.length > 0 && (
             <Box sx={{ mt: 6, textAlign: 'center' }}>
-              <Button
-                variant="outlined"
-                color="primary"
-                size="large"
-                sx={{ px: 4, py: 1.5, borderWidth: 2 }}
-              >
-                Voir plus d'actualités
-              </Button>
+              <Link href="/actualites" style={{ textDecoration: 'none' }}>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  size="large"
+                  sx={{ px: 4, py: 1.5, borderWidth: 2 }}
+                >
+                  Voir plus d'actualités
+                </Button>
+              </Link>
             </Box>
           )}
         </Container>
